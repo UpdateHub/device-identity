@@ -1,0 +1,18 @@
+#!/bin/sh
+
+min_ifindex=$((0xFFFF))
+
+for dev in /sys/class/net/*; do
+    [ $dev = "/sys/class/net/lo" ] && continue
+
+    ifindex=$(cat $dev/ifindex)
+
+    if [ $ifindex -lt $min_ifindex ] && [ -n "$(cat $dev/address)" ]; then
+        min_ifindex=$ifindex
+        iface=$dev
+    fi
+done
+
+[ -z "$iface" ] && exit 1
+
+echo "mac=$(cat $iface/address)"
