@@ -1,8 +1,7 @@
 #!/bin/sh
 
-serial="$(awk '/^Serial/ { print $3 }' /proc/cpuinfo)"
+serial="$(awk '/^Serial/ { print $3 }' /proc/cpuinfo | sed 's,^0*,,g')"
 
 [ -z "$serial" ] && exit 1
-[ "$serial" = "0000000000000000" ] && exit 1
 
 echo "serial=$serial"
