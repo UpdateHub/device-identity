@@ -1,0 +1,8 @@
+#!/bin/sh
+
+serial="$(awk '/^Serial/ { print $3 }' /proc/cpuinfo)"
+
+[ -z "$serial" ] && exit 1
+[ "$serial" = "0000000000000000" ] && exit 1
+
+echo "serial=$serial"
