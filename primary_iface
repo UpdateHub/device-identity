@@ -6,8 +6,9 @@ for dev in /sys/class/net/*; do
     [ $dev = "/sys/class/net/lo" ] && continue
 
     ifindex=$(cat $dev/ifindex)
+    mac="$(cat $dev/address)"
 
-    if [ $ifindex -lt $min_ifindex ] && [ -n "$(cat $dev/address)" ]; then
+    if [ $ifindex -lt $min_ifindex ] && [ -n "$mac" ] && [ "$mac" != "00:00:00:00" ]; then
         min_ifindex=$ifindex
         iface=$dev
     fi
