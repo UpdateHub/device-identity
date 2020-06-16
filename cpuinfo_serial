@@ -1,14 +1,15 @@
 #!/bin/sh
 
 serial_cpu="$(awk '/^Serial/ { print $3 }' /proc/cpuinfo | sed 's,^0*,,g')"
-serial_soc="$(cat /sys/devices/soc0/serial_number)"
-
 if [ -n "$serial_cpu" ]; then
     echo "serial=$serial_cpu"
     exit 0
-elif [ -n "$serial_soc" ]; then
+fi
+
+serial_soc="$(cat /sys/devices/soc0/serial_number 2> /dev/null)"
+if [ -n "$serial_soc" ]; then
     echo "serial=$serial_soc"
     exit 0
-else
-    exit 1
 fi
+
+exit 1
